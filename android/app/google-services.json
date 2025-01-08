@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "739678330623",
+    "project_id": "nessmanet-3fdbc",
+    "storage_bucket": "nessmanet-3fdbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739678330623:android:68bdd954fddbd6452176ca",
+        "android_client_info": {
+          "package_name": "com.nessmaNet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739678330623-e753scod2ef29lp71r6kv41pjno6pl1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRciDd4zF8_D8FQJkE950WK7h7ykV5NA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739678330623-e753scod2ef29lp71r6kv41pjno6pl1o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "739678330623-52b4vdqgomcsuhra6r5a4s3e4q5tsf5l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.nessmaNet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
