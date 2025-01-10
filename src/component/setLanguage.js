@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -28,7 +29,7 @@ const SetLanguage = ({navigation}) => {
   const setArabicLanguage = async () => {
     setLoading(true);
     AsyncStorage.setItem('language', 'ar');
-    const response = await getApiWithouttoken(`/get-language?language=ar`);
+    const response = await getApiWithouttoken('/get-language?language=ar&version=1');
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
     }
@@ -39,7 +40,7 @@ const SetLanguage = ({navigation}) => {
   const setEnglishLanguage = async () => {
     setLoading(true);
     AsyncStorage.setItem('language', 'en');
-    const response = await getApiWithouttoken(`/get-language?language=en`);
+    const response = await getApiWithouttoken('/get-language?language=en&version=1');
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
     }

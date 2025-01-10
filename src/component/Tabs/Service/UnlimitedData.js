@@ -10,6 +10,7 @@ import {CustomText} from '../../../comman/customText';
 import {styles} from '../../../helper/styles';
 import {Fonts} from '../../../helper/theme';
 import LoadingPlaceHolder from './loader';
+import {getApiWithouttoken} from '../../../api/adminApi';
 
 const terrif75 = {
   speed_download: 14336,
@@ -108,12 +109,15 @@ const UnlimitedPlan = ({navigation}) => {
   const getAllservices = async () => {
     setType('unlimited');
     setLoading(true);
-    const response = await getAllTarrifPlan(currentService.tariff_id);
-
-    if (response.remote === 'success') {
-      const filter = response.data.filter(item => item.price !== '0.0000');
-      console.log({filter}, 'filter2');
-      setTarrifs(sortArray([...filter, terrif75]));
+    // const response = await getAllTarrifPlan(currentService.tariff_id);
+    const response = await getApiWithouttoken('/get-unlimited-tariffs');
+    if (response.success) {
+      const filter = response.data.data.filter(item => item.price !== '0.0000');
+      console.log(
+        filter.map(item => item.id),
+        'filter2',
+      );
+      setTarrifs(sortArray(filter));
     } else {
       setTarrifs([]);
       if (response.errors.status === 401) {
@@ -216,7 +220,7 @@ const UnlimitedPlan = ({navigation}) => {
                             lineHeight: 18,
                             textAlign: 'left',
                           }}>
-                          {parseFloat(item.speed_download / 1024).toFixed(0) ||
+                          {parseFloat(item.download_speed / 1024).toFixed(0) ||
                             0}{' '}
                           mbps
                         </CustomText>
@@ -247,7 +251,9 @@ const UnlimitedPlan = ({navigation}) => {
                   <View style={{width: '100%', marginTop: 10}}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('ChangePlan', {service: item})
+                        navigation.navigate('ChangePlan', {
+                          service: {...item, id: item.tariff_id},
+                        })
                       }
                       style={styles.borderedButton}>
                       <CustomText

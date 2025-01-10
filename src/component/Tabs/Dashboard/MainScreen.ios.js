@@ -118,7 +118,10 @@ const MainScreen = ({navigation}) => {
       device_token: deviceToken,
       customer_id: user.id,
     };
-    const response = await postApisWithoutToken('/device-token', data);
+    const response = await postApisWithoutToken(
+      '/device-token?version=1',
+      data,
+    );
     console.log('response122', response, data);
   };
 
@@ -259,7 +262,7 @@ const MainScreen = ({navigation}) => {
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
     const response = await getApiWithouttoken(
-      `/get-language?language=${lang || 'ar'}`,
+      `/get-language?language=${lang || 'ar'}&version=1`,
     );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));

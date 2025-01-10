@@ -10,6 +10,7 @@ import {CustomText} from '../../../comman/customText';
 import {styles} from '../../../helper/styles';
 import {Fonts} from '../../../helper/theme';
 import LoadingPlaceHolder from './loader';
+import {getApiWithouttoken} from '../../../api/adminApi';
 
 const terrif76 = {
   speed_download: 20000,
@@ -109,28 +110,29 @@ const LimitedData = ({navigation}) => {
   const getAllLimitedPlan = async () => {
     setType('limited');
     setLoading(true);
-    const response = await getAllTarrifPlan(currentService.tariff_id);
-
-    if (response.remote === 'success') {
-      const filter = response.data.filter(
-        item => item.price === '0.0000' || item.id == 57,
+    // const response = await getAllTarrifPlan(currentService.tariff_id);
+    const response = await getApiWithouttoken('/get-limited-tariffs');
+    // console.log(response, "response")
+    if (response.success) {
+      const filter = response.data.data.filter(
+        item => item.price === '0.0000' || item.tariff_id == '57',
       );
-      console.log({filter});
-      const rowData = [...filter, terrif76].map(item => {
-        if (itemDetail(item.id)) {
+      // console.log({filter});
+      const rowData = filter.map(item => {
+        if (itemDetail(parseInt(item.tariff_id))) {
+          console.log(item.id);
           return {
             title: item.title,
-            price: itemDetail(item.id).price,
-            speed_download: item.speed_download,
-            amount: itemDetail(item.id).amount,
-            amount_in: itemDetail(item.id).amount_in,
-            id: item.id,
+            price: itemDetail(parseInt(item.tariff_id)).price,
+            speed_download: item.download_speed,
+            amount: itemDetail(parseInt(item.tariff_id)).amount,
+            amount_in: itemDetail(parseInt(item.tariff_id)).amount_in,
+            id: item.tariff_id,
           };
         } else {
           return {price: 0};
         }
       });
-
       setTarrifs(sortData(rowData));
     } else {
       setTarrifs([]);
@@ -171,7 +173,7 @@ const LimitedData = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           renderItem={({item, index}) => {
             return (
-              itemDetail(item.id) && (
+              itemDetail(parseInt(item.id)) && (
                 <View style={{width: '100%', padding: 2}}>
                   <View
                     style={[
@@ -250,7 +252,7 @@ const LimitedData = ({navigation}) => {
                           navigation.navigate('ChangePlan', {
                             service: item,
                             price: parseFloat(
-                              itemDetail(item.id).price,
+                              itemDetail(parseInt(item.id)).price,
                             ).toFixed(2),
                           })
                         }

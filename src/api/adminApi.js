@@ -12,7 +12,6 @@ export const postApisWithoutToken = async (url, data) => {
     },
     data: JSON.stringify(data),
   };
-  
 
   try {
     console.log('Config: ', config);

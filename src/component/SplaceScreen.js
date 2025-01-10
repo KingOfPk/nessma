@@ -40,7 +40,7 @@ const SplashScreen = ({navigation}) => {
     const lang = await AsyncStorage.getItem('language');
     if (lang) {
       const response = await getApiWithouttoken(
-        `/get-language?language=${lang || 'ar'}`,
+        `/get-language?language=${lang || 'ar'}&version=1`,
       );
       if (response.success) {
         dispatch(setLanguageString(response.data.data.values));

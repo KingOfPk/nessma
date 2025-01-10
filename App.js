@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Alert, Button, Linking, Text, View} from 'react-native';
+import {Alert, AppState, Button, Linking, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/route/AppNavigator';
 import {Provider as StoreProvider, useDispatch, useSelector} from 'react-redux';
@@ -15,12 +15,13 @@ import ForegroundHandler, {
   requestUserPermission,
 } from './src/utils/foregroundHendler';
 import VersionCheck from 'react-native-version-check';
-import { enableScreens } from 'react-native-screens';
-import { getApp, initializeApp } from '@react-native-firebase/app';
+import {enableScreens} from 'react-native-screens';
+import {getApp, initializeApp} from '@react-native-firebase/app';
 // import configureStore from './src/store/config';
 
 export default App = () => {
   // const {store, persistor} = configureStore();
+  const appState = useRef(AppState.currentState);
   const toast = useToast();
   const navigation = useRef();
   enableScreens();
@@ -50,6 +51,18 @@ export default App = () => {
       }
     });
   };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      // setAppStateVisible(appState.current);
+      appState.current = nextAppState;
+      console.log('AppState', appState.current);
+      checkAppVersion();
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, [appState.current]);
 
   return (
     <StoreProvider store={store}>

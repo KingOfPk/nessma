@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
@@ -126,7 +127,7 @@ const LoginScreen = ({navigation}) => {
 
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
-    const response = await getApiWithouttoken(`/get-language?language=${lang}`);
+    const response = await getApiWithouttoken(`/get-language?language=${lang}&version=1`);
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
       dispatch(setAppLanguage(lang));
@@ -143,7 +144,7 @@ const LoginScreen = ({navigation}) => {
     AsyncStorage.setItem('language', lang);
     try {
       const response = await getApiWithouttoken(
-        `/get-language?language=${lang}`,
+        `/get-language?language=${lang}&version=1`,
       );
       if (response.success) {
         dispatch(setLanguageString(response.data.data.values));

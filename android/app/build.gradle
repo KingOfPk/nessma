@@ -79,8 +79,8 @@ android {
         applicationId "com.nessmaNet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 21
-        versionName "1.1.5"
+        versionCode 22
+        versionName "1.1.6"
     }
     signingConfigs {
         debug {

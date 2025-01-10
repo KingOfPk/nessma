@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {width} from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, TextInput, TouchableOpacity, View} from 'react-native';
