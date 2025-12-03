@@ -5,7 +5,7 @@ import {Header} from '../../../comman/CommanHeader';
 import {CustomText} from '../../../comman/customText';
 import {styles} from '../../../helper/styles';
 import {Fonts} from '../../../helper/theme';
-import {Colors, DateTimePicker, Picker} from 'react-native-ui-lib';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Down from '../../../../assets/images/Icons/Vector.svg';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {getAllTarrifPlan} from '../../../api/getAllTerrifPlan';
@@ -18,10 +18,10 @@ import {showStatus} from '../../../utils/showToast';
 import {useToast} from 'react-native-toast-notifications';
 import {ActivityIndicator} from 'react-native';
 import {setCurrentUserService} from '../../../store/userReducer';
+import {Dropdown} from 'react-native-element-dropdown';
 const ChangePlan = ({navigation, route}) => {
-  const {currentService, balance, languageString, user} = useSelector(
-    state => state.user,
-  );
+  const {currentService, balance, languageString, user, AllCapedData} =
+    useSelector(state => state.user);
   const toast = useToast();
   const options = [
     {label: 'JavaScript', value: 'js'},
@@ -34,14 +34,15 @@ const ChangePlan = ({navigation, route}) => {
   const [tarrif, setTarrifs] = useState([]);
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
-
+  const [planType, setPlanType] = useState(route.params?.plan);
+  const [isVisibleTime, setIsVisibleTime] = useState(false);
   useEffect(() => {
     getAllservices();
   }, []);
 
   useEffect(() => {
     if (route.params?.service) {
-      console.log(route.params?.service);
+      console.log(route.params?.service, 'service');
       setSelectedPlan({
         label: route.params.service.title,
         value: route.params.service.id,
@@ -56,7 +57,15 @@ const ChangePlan = ({navigation, route}) => {
     const response = await getAllTarrifPlan(currentService.tariff_id);
     if (response.remote === 'success') {
       const tarrif1 = response.data.map(item => {
-        return {label: item.title, value: item.id, price: item.price};
+        return {
+          label: item.title,
+          value: item.id,
+          price:
+            item.price === '0.0000'
+              ? itemDetail(parseInt(item.id)).price
+              : item.price,
+          plan: item.price === '0.0000' ? 'limited' : 'unlimited',
+        };
       });
       console.log(tarrif1);
       setTarrifs(tarrif1);
@@ -71,6 +80,13 @@ const ChangePlan = ({navigation, route}) => {
         }
       }
     }
+  };
+
+  const itemDetail = id => {
+    // console.log(AllCapedData);
+    const detail = AllCapedData.find(item => item.tariff_id === id);
+
+    return detail;
   };
 
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -98,9 +114,9 @@ const ChangePlan = ({navigation, route}) => {
       };
       console.log(selectedPlan, data, currentService.id);
       const response = await changeTariffPlan(data, currentService.id);
-      console.log(response);
+      console.log(response, 'response123');
       if (response.remote === 'success') {
-        if (parseInt(selectedPlan.price) == 0) {
+        if (planType === 'limited') {
           getCurrentService();
         } else {
           navigation.navigate('Tabs');
@@ -120,14 +136,15 @@ const ChangePlan = ({navigation, route}) => {
     console.log(user.id);
     setLoading(true);
     const response = await getAllUserService(user.id);
+    console.log(response, 'response23');
     if (response.remote === 'success') {
       response.data.map(item => {
         if (item.status === 'active') {
           dispatch(setCurrentUserService(item));
+          navigation.navigate('Topup');
         }
       });
       setLoading(false);
-      navigation.navigate('Topup');
     }
   };
 
@@ -160,12 +177,37 @@ const ChangePlan = ({navigation, route}) => {
               <CustomText style={styles.label}>
                 {languageString.newPlanStartDate}
               </CustomText>
+              <TouchableOpacity
+                onPress={() => setIsVisibleTime(true)}
+                style={styles.inputBox}>
+                <CustomText
+                  style={{
+                    fontSize: 14,
+                    color: '#161B1D',
+                    fontFamily: Fonts.regular1,
+                  }}>
+                  {moment(date).format('YYYY-MM-DD')}
+                </CustomText>
+              </TouchableOpacity>
+              <DateTimePickerModal
+                minuteInterval={30}
+                isVisible={isVisibleTime}
+                mode="date"
+                onConfirm={date => {
+                  setDate(date);
+                  setIsVisibleTime(false);
+                }}
+                date={new Date()}
+                onCancel={() => setIsVisibleTime(false)}
+                // display="spinner"
+              />
               {/* <TextInput
                 placeholderTextColor={'#5f5f5f'}
                 placeholder="2023-01-16"
                 style={styles.inputBox}
               /> */}
-              <DateTimePicker
+              {/* <CalendarPicker onDateChange={(date)=> console.log(date) } /> */}
+              {/* <DateTimePicker
                 migrateTextField
                 containerStyle={[styles.inputBox]}
                 mode={'date'}
@@ -175,45 +217,68 @@ const ChangePlan = ({navigation, route}) => {
                 dateFormat={'DD-MM-YYYY'}
                 onChange={date => setDate(moment(date).format('YYYY-MM-DD'))}
                 // value={new Date('October 13, 2014')}
-              />
+              /> */}
             </View>
             <View style={{width: '100%', marginTop: 20}}>
               <CustomText style={styles.label}>
                 {languageString.newPlan}
               </CustomText>
               <View style={{width: '100%'}}>
-                <Picker
-                  placeholder={languageString.selectPlan}
+                <Dropdown
+                  style={[styles.inputBox]}
+                  placeholderStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  selectedTextStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  activeColor={'#F0F0F0'}
+                  iconStyle={{color: '#5F6368'}}
+                  search={0}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  data={tarrif}
+                  // enableSearch
+                  value={selectedPlan}
+                  onChange={item => {
+                    setSelectedPlan(item);
+                    setPlanType(item.plan);
+                  }}
+                  underlineColor={'transparent'}
+                />
+                {/* <Picker
+                  placeholder={
+                    selectedPlan
+                      ? selectedPlan?.label
+                      : languageString.selectPlan
+                  }
                   floatingPlaceholder={false}
                   containerStyle={{height: 50}}
                   hideUnderline
-                  value={selectedPlan}
+                  value={selectedPlan?.value}
                   enableModalBlur={false}
-                  onChange={item => setSelectedPlan(item)}
+                  onChange={item => {
+                    console.log(item, 'item');
+                    setSelectedPlan(item);
+                    setPlanType(item.plan);
+                  }}
                   topBarProps={{title: languageString.searchPlan}}
                   style={styles.inputBox}
-                  // showSearch
-                  // searchPlaceholder={'Search a Type of Design'}
                   searchStyle={{
                     color: Colors.blue30,
                     placeholderTextColor: Colors.grey50,
                   }}
-                  // onSearchChange={value => console.warn('value', value)}
                 >
                   {tarrif.map(option => (
                     <Picker.Item key={option.value} value={option} />
                   ))}
-                </Picker>
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    top: 30,
-                    position: 'absolute',
-                    right: 10,
-                  }}>
-                  <Down />
-                </View>
+                </Picker> */}
               </View>
             </View>
             <View style={{width: '100%', marginTop: 20}}>

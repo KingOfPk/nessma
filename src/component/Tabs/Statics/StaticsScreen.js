@@ -14,11 +14,10 @@ import {Fonts} from '../../../helper/theme';
 import {itemWidth, sliderWidth, styles} from '../../../helper/styles';
 import Download from '../../../../assets/images/Icons/download.svg';
 import Upload from '../../../../assets/images/Icons/upload.svg';
-import CalendarPicker from 'react-native-calendar-picker';
 import {getStatics} from '../../../api/getUserStatics';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
-import {Colors, DateTimePicker, Picker} from 'react-native-ui-lib';
+import { useSelector } from 'react-redux';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {gteAllFUPCounter} from '../../../api/getAllFUPCounter';
 import Lottie from 'lottie-react-native';
 const StaticScreen = () => {
@@ -43,6 +42,8 @@ const StaticScreen = () => {
   const [statistics, setStatistics] = useState([]);
   const [FUPCounter, setFUPCounter] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const [isSelectStartTime, setIsSelectStartTime] = useState(false);
+  const [isSelectEndTime, setIsSelectEndTime] = useState(false);
   const onDateChange = date => {
     console.log(date);
   };
@@ -159,7 +160,31 @@ const StaticScreen = () => {
 
             <View style={{width: '100%', flexDirection: 'row'}}>
               <View style={{width: '50%', padding: 5}}>
-                <DateTimePicker
+                <TouchableOpacity
+                  onPress={() => setIsSelectStartTime(true)}
+                  style={styles.inputBox}>
+                  <CustomText
+                    style={{
+                      fontSize: 14,
+                      color: '#161B1D',
+                      fontFamily: Fonts.regular1,
+                    }}>
+                    {moment(startDate).format('YYYY-MM-DD')}
+                  </CustomText>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  minuteInterval={30}
+                  isVisible={isSelectStartTime}
+                  mode="date"
+                  onConfirm={date => {
+                    setStartDate(date);
+                    setIsSelectStartTime(false);
+                  }}
+                  date={new Date()}
+                  onCancel={() => setIsSelectStartTime(false)}
+                  // display="spinner"
+                />
+                {/* <DateTimePicker
                   migrateTextField
                   containerStyle={[styles.inputBox]}
                   mode={'date'}
@@ -170,10 +195,34 @@ const StaticScreen = () => {
                   dateFormat={'DD-MM-YYYY'}
                   onChange={date => setStartDate(date)}
                   // value={new Date('October 13, 2014')}
-                />
+                /> */}
               </View>
               <View style={{width: '50%', padding: 5}}>
-                <DateTimePicker
+                <TouchableOpacity
+                  onPress={() => setIsSelectEndTime(true)}
+                  style={styles.inputBox}>
+                  <CustomText
+                    style={{
+                      fontSize: 14,
+                      color: '#161B1D',
+                      fontFamily: Fonts.regular1,
+                    }}>
+                    {moment(endDate).format('YYYY-MM-DD')}
+                  </CustomText>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  minuteInterval={30}
+                  isVisible={isSelectEndTime}
+                  mode="date"
+                  onConfirm={date => {
+                    setEndDate(date);
+                    setIsSelectEndTime(false);
+                  }}
+                  date={new Date()}
+                  onCancel={() => setIsSelectEndTime(false)}
+                  // display="spinner"
+                />
+                {/* <DateTimePicker
                   migrateTextField
                   containerStyle={[styles.inputBox]}
                   mode={'date'}
@@ -184,7 +233,7 @@ const StaticScreen = () => {
                   dateFormat={'DD-MM-YYYY'}
                   onChange={date => setEndDate(date)}
                   // value={new Date('October 13, 2014')}
-                />
+                /> */}
               </View>
             </View>
             <View style={{width: '100%', flexDirection: 'row'}}>

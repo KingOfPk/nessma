@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Checkbox, DateTimePicker} from 'react-native-ui-lib';
 import {CustomText} from '../comman/customText';
 import {Fonts} from '../helper/theme';
 import LOGO from '../../assets/images/Logo2.svg';

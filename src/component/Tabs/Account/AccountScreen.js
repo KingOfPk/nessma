@@ -29,6 +29,7 @@ import {WebView} from 'react-native-webview';
 import {ORIGIN} from '../../../config/config';
 import {refreshToken} from '../../../api/refreshToken';
 // import PDFView from 'react-native-view-pdf';
+import Pdf from 'react-native-pdf';
 import {useSelector} from 'react-redux';
 const AccountScreen = ({navigation}) => {
   const {user, balance, currentPlan, languageString, language} = useSelector(
@@ -374,16 +375,34 @@ const AccountScreen = ({navigation}) => {
                   Invoice
                 </CustomText>
               </View>
-              {/* <View style={{width: '100%', height: '90%'}}>
-                <PDFView
+              <View style={{width: '100%', height: '90%'}}>
+                <Pdf
+                  source={{
+                    uri: `data:application/pdf;base64,${invoiceId.base64}`,
+                  }}
+                  onLoadComplete={(numberOfPages, filePath) => {
+                    console.log(`Number of pages: ${numberOfPages}`);
+                  }}
+                  onPageChanged={(page, numberOfPages) => {
+                    console.log(`Current page: ${page}`);
+                  }}
+                  onError={error => {
+                    console.log(error);
+                  }}
+                  onPressLink={uri => {
+                    console.log(`Link pressed: ${uri}`);
+                  }}
+                  style={{width: '100%', height: '100%'}}
+                />
+                {/* <PDFView
                   fadeInDuration={250.0}
                   style={{flex: 1}}
                   resource={invoiceId.base64}
                   resourceType={'base64'}
                   onLoad={() => console.log(`PDF rendered from ${'base64'}`)}
                   onError={error => console.log('Cannot render PDF', error)}
-                />
-              </View> */}
+                /> */}
+              </View>
             </SafeAreaView>
           </View>
         </Modal>

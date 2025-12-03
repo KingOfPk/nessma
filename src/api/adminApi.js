@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const baseUrl = 'https://portal.nessmanet.com/api';
 // const baseUrl = 'https://digimonk.live/nessmadev/public/api';
+const baseUrl = 'https://portal.nessmanet.com/api';
 import axios from 'axios';
 export const postApisWithoutToken = async (url, data) => {
   const config = {
@@ -80,7 +79,6 @@ export const getApiWithouttoken = async url => {
   };
   try {
     const response = await axios(config);
-    // console.log(response)
     if (response.status === 200) {
       return {
         success: true,

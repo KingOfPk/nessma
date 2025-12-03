@@ -23,24 +23,25 @@ const SplashScreen = ({navigation}) => {
       const response = await refreshToken();
       console.log(response);
       if (response.remote === 'success') {
-        navigation.navigate('Tabs');
+        navigation.replace('Tabs');
       } else {
-        navigation.navigate('LoginScreen');
+        navigation.replace('LoginScreen');
       }
     } else {
-      navigation.navigate('LoginScreen');
+      navigation.replace('LoginScreen');
     }
   };
 
   useEffect(() => {
-    SetLanguage();
+    // SetLanguage();
   }, []);
 
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
     if (lang) {
+      const appVersion = await AsyncStorage.getItem('appVersion');
       const response = await getApiWithouttoken(
-        `/get-language?language=${lang || 'ar'}&version=1`,
+        `/get-language?language=${lang || 'ar'}&version=${appVersion}`,
       );
       if (response.success) {
         dispatch(setLanguageString(response.data.data.values));

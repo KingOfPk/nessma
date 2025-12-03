@@ -15,7 +15,7 @@ import Modal from 'react-native-modal';
 import {downloadContract} from '../../api/downloadContract';
 import {showStatus} from '../../utils/showToast';
 import {useToast} from 'react-native-toast-notifications';
-import RNFetchBlob from 'rn-fetch-blob';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 const Contract = () => {
   const {languageString, user} = useSelector(state => state.user);
   const toast = useToast();
@@ -45,7 +45,7 @@ const Contract = () => {
   };
 
   const downloadPDF = async pdf => {
-    const {config, fs} = RNFetchBlob;
+    const {config, fs} = ReactNativeBlobUtil;
     let downloadDir = fs.dirs.DownloadDir; // this is the pictures directory. You can check the available directories in the wiki.
     let options = {
       fileCache: true,
@@ -57,7 +57,7 @@ const Contract = () => {
         description: 'Downloading Invoice.',
       },
     };
-    RNFetchBlob.fs.writeFile(
+    ReactNativeBlobUtil.fs.writeFile(
       `${downloadDir}/${pdf.name}`,
       pdf.content,
       'base64',

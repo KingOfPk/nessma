@@ -11,7 +11,6 @@ import {
 import {CustomText} from '../comman/customText';
 import {styles} from '../helper/styles';
 import {Fonts} from '../helper/theme';
-import {Colors, Picker} from 'react-native-ui-lib';
 import Down from '../../assets/images/Icons/Vector.svg';
 
 import {Header} from '../comman/CommanHeader';

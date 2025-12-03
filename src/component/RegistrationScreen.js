@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Checkbox, DateTimePicker, Picker, Colors} from 'react-native-ui-lib';
 import {CustomText} from '../comman/customText';
 import {Fonts} from '../helper/theme';
 import LOGO from '../../assets/images/Logo2.svg';
@@ -25,6 +24,7 @@ import {useToast} from 'react-native-toast-notifications';
 import Modal from 'react-native-modal';
 import {useSelector} from 'react-redux';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import { Dropdown } from 'react-native-element-dropdown';
 const RegistrationScreen = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
@@ -206,7 +206,33 @@ const RegistrationScreen = ({navigation}) => {
                   {languageString.plans}*
                 </CustomText>
                 <View style={{width: '100%'}}>
-                  <Picker
+                  <Dropdown
+                    style={[styles.inputBox]}
+                    dropdownPosition="top"
+                    placeholderStyle={{
+                      color: '#5F6368',
+                      fontSize: 14,
+                      fontFamily: Fonts.regular1,
+                    }}
+                    selectedTextStyle={{
+                      color: '#5F6368',
+                      fontSize: 14,
+                      fontFamily: Fonts.regular1,
+                    }}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    activeColor={'#F0F0F0'}
+                    iconStyle={{color: '#5F6368'}}
+                    search={0}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    data={plans}
+                    // enableSearch
+                    value={selectedPlan}
+                    onChange={item => setSelectedPriority(item)}
+                    underlineColor={'transparent'}
+                  />
+                  {/* <Picker
                     placeholder={languageString.selectPlan}
                     floatingPlaceholder={false}
                     containerStyle={{height: 50, marginBottom: 20}}
@@ -216,28 +242,15 @@ const RegistrationScreen = ({navigation}) => {
                     onChange={item => setSelectedPlan(item)}
                     topBarProps={{title: ''}}
                     style={styles.inputBox}
-                    // showSearch
-                    // searchPlaceholder={'Search a Type of Design'}
                     searchStyle={{
                       color: Colors.blue30,
                       placeholderTextColor: Colors.grey50,
                     }}
-                    // onSearchChange={value => console.warn('value', value)}
                   >
                     {plans.map(option => (
                       <Picker.Item key={option?.value} value={option} />
                     ))}
-                  </Picker>
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      top: 30,
-                      position: 'absolute',
-                      right: 10,
-                    }}>
-                    <Down />
-                  </View>
+                  </Picker> */}
                 </View>
               </View>
             </View>

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {width} from 'deprecated-react-native-prop-types/DeprecatedImagePropType';
 import React, {useState} from 'react';
 import {
@@ -12,7 +11,6 @@ import {
 import {CustomText} from '../comman/customText';
 import {styles} from '../helper/styles';
 import {Fonts} from '../helper/theme';
-import {Colors, Picker} from 'react-native-ui-lib';
 import Down from '../../assets/images/Icons/Vector.svg';
 
 import {Header} from '../comman/CommanHeader';
@@ -66,8 +64,8 @@ const PaywithVoucher = ({navigation}) => {
           languageString.pleaseCheckYourRefillCode,
           'custom_error_toast',
         );
-        setLoading(false);
         navigation.navigate('Tabs');
+        setLoading(false);
       }
     }
   };
@@ -98,7 +96,7 @@ const PaywithVoucher = ({navigation}) => {
         height: '100%',
         position: 'absolute',
         backgroundColor: 'rgba(0,0,0,.5)',
-        zIndex: 1,
+        zIndex: 1000,
         alignItems: 'center',
         justifyContent: 'center',
       }}>

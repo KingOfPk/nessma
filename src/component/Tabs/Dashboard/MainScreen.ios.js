@@ -251,6 +251,7 @@ const MainScreen = ({navigation}) => {
   const getLimitedPlanDetail = async () => {
     const response = await getCapedData();
     if (response.remote === 'success') {
+      console.log('response6565', response.data);
       dispatch(getAllCapedData(response.data));
     }
   };
@@ -261,8 +262,9 @@ const MainScreen = ({navigation}) => {
 
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
+    const appVersion = await AsyncStorage.getItem('appVersion');
     const response = await getApiWithouttoken(
-      `/get-language?language=${lang || 'ar'}&version=1`,
+      `/get-language?language=${lang || 'ar'}&version=${appVersion}`,
     );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
@@ -274,7 +276,10 @@ const MainScreen = ({navigation}) => {
     console.log(language);
     var lang = selectedIndex == 0 ? 'en' : 'ar';
     AsyncStorage.setItem('language', lang);
-    const response = await getApiWithouttoken(`/get-language?language=${lang}`);
+    const appVersion = await AsyncStorage.getItem('appVersion');
+    const response = await getApiWithouttoken(
+      `/get-language?language=${lang}&version=${appVersion}`,
+    );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
     }
@@ -311,19 +316,19 @@ const MainScreen = ({navigation}) => {
     getGiftCard();
   };
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, []);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, []);
 
-  const backAction = () => {
-    if (navigation.isFocused()) {
-      BackHandler.exitApp();
-      return true;
-    }
-  };
+  // const backAction = () => {
+  //   if (navigation.isFocused()) {
+  //     BackHandler.exitApp();
+  //     return true;
+  //   }
+  // };
 
   const sendResponseOfLoginGiftCard = async () => {
     const data = {customer_id: user.id, giftcard_response: '1'};

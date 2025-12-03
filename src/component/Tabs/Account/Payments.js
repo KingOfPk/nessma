@@ -1,5 +1,10 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {styles} from '../../../helper/styles';
 import {CustomText} from '../../../comman/customText';
 import {Fonts} from '../../../helper/theme';
@@ -7,7 +12,7 @@ import Document from '../../../../assets/images/Icons/document.svg';
 import Eye from '../../../../assets/images/Icons/eye-green.svg';
 import Download from '../../../../assets/images/Icons/download-green.svg';
 import Back from '../../../../assets/images/Icons/Back.svg';
-import RNFetchBlob from 'rn-fetch-blob';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import {getDocumentFile} from '../../../api/getDocumentFile';
 import {showStatus} from '../../../utils/showToast';
 import {useToast} from 'react-native-toast-notifications';
@@ -43,7 +48,7 @@ const Payments = ({item, setOpenInvoice, setInvoiceId}) => {
     }
   };
   const downloadInvoice = async pdf => {
-    const {config, fs} = RNFetchBlob;
+    const {config, fs} = ReactNativeBlobUtil;
     let downloadDir =
       Platform.OS == 'ios' ? fs.dirs.DocumentDir : fs.dirs.DownloadDir; // this is the pictures directory. You can check the available directories in the wiki.
     let options = {
@@ -57,7 +62,7 @@ const Payments = ({item, setOpenInvoice, setInvoiceId}) => {
       },
     };
     console.log(downloadDir);
-    RNFetchBlob.fs.writeFile(
+    ReactNativeBlobUtil.fs.writeFile(
       `${downloadDir}/${pdf.name}`,
       pdf.content,
       'base64',

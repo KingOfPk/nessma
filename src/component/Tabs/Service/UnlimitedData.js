@@ -253,6 +253,7 @@ const UnlimitedPlan = ({navigation}) => {
                       onPress={() =>
                         navigation.navigate('ChangePlan', {
                           service: {...item, id: item.tariff_id},
+                          plan: 'limited',
                         })
                       }
                       style={styles.borderedButton}>

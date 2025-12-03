@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
@@ -11,10 +10,8 @@ import {
   ScrollView,
   Keyboard,
   I18nManager,
-  BackHandler,
   ActivityIndicator,
 } from 'react-native';
-import {Checkbox, DateTimePicker} from 'react-native-ui-lib';
 import {CustomText} from '../comman/customText';
 import {Fonts} from '../helper/theme';
 import LOGO from '../../assets/images/Logo2.svg';
@@ -76,7 +73,7 @@ const LoginScreen = ({navigation}) => {
       console.log(response);
       if (response.remote === 'success') {
         dispatch(setShowedModal(true));
-        navigation.dispatch(StackActions.replace('Tabs'));
+        navigation.replace("Tabs");
       } else {
         showStatus(toast, response.errors.errors, 'custom_error_toast');
       }
@@ -111,23 +108,13 @@ const LoginScreen = ({navigation}) => {
     SetLanguage();
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
-
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, []);
-
-  const backAction = () => {
-    if (navigation.isFocused()) {
-      BackHandler.exitApp();
-      return true;
-    }
-  };
 
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
-    const response = await getApiWithouttoken(`/get-language?language=${lang}&version=1`);
+    const appVersion = await AsyncStorage.getItem('appVersion');
+    const response = await getApiWithouttoken(
+      `/get-language?language=${lang || 'ar'}&version=${appVersion}`,
+    );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
       dispatch(setAppLanguage(lang));
@@ -143,8 +130,9 @@ const LoginScreen = ({navigation}) => {
     setLoading(true);
     AsyncStorage.setItem('language', lang);
     try {
+      const appVersion = await AsyncStorage.getItem('appVersion');
       const response = await getApiWithouttoken(
-        `/get-language?language=${lang}&version=1`,
+        `/get-language?language=${lang || 'ar'}&version=${appVersion}`,
       );
       if (response.success) {
         dispatch(setLanguageString(response.data.data.values));

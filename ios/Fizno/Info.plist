@@ -2,18 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>MontserratBlack.ttf</string>
-		<string>MontserratBold.ttf</string>
-		<string>MontserratExtraBold.ttf</string>
-		<string>MontserratExtraLight.ttf</string>
-		<string>MontserratLight.ttf</string>
-		<string>MontserratMedium.ttf</string>
-		<string>MontserratRegular.ttf</string>
-		<string>MontserratSemiBold.ttf</string>
-		<string>MontserratThin.ttf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -32,10 +20,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-  <key>NSCameraUsageDescription</key>
-  <string>$(PRODUCT_NAME) want to permistion for upload the image of your asset or profile</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>$(PRODUCT_NAME) want to permistion for upload the image of your asset or profile</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -46,19 +30,58 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
-    <key>NSExceptionDomains</key>
-    <dict>
-        <key>digimonk.net</key>
-        <dict>
-            <key>NSIncludesSubdomains</key>
-            <true/>
-            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-            <true/>
-        </dict>
-    </dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>digimonk.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) want to permistion for upload the image of your asset or profile</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) want to permistion for upload the image of your asset or profile</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FontAwesome.ttf</string>
+		<string>Tajawal-Regular.ttf</string>
+		<string>Tajawal-Bold.ttf</string>
+		<string>Tajawal-Light.ttf</string>
+		<string>Tajawal-Medium.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Panton-Trial-Bold.ttf</string>
+		<string>Panton-Trial-Light.ttf</string>
+		<string>Panton Narrow Regular.otf</string>
+		<string>Panton SemiBold.ttf</string>
+		<string>Panton Bold.otf</string>
+		<string>Panton-Narrow-Light.otf</string>
+		<string>Panton-Trial-Regular.ttf</string>
+		<string>Panton-Trial-SemiBold.ttf</string>
+		<string>UNIVERNB.ttf</string>
+		<string>UniversityRomanStdBold.OTF</string>
+		<string>UniversityRomanStdItalic.OTF</string>
+		<string>UniversityRomanStdRegular.OTF</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

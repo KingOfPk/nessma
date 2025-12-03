@@ -254,6 +254,7 @@ const LimitedData = ({navigation}) => {
                             price: parseFloat(
                               itemDetail(parseInt(item.id)).price,
                             ).toFixed(2),
+                            plan: 'limited',
                           })
                         }
                         style={styles.borderedButton}>

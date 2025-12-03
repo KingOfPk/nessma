@@ -1,0 +1,33 @@
+diff --git a/node_modules/react-native-ui-lib/lib/android/src/main/java/com/wix/reactnativeuilib/keyboardinput/utils/RuntimeUtils.java b/node_modules/react-native-ui-lib/lib/android/src/main/java/com/wix/reactnativeuilib/keyboardinput/utils/RuntimeUtils.java
+index 95c5e8e..cdbd84c 100644
+--- a/node_modules/react-native-ui-lib/lib/android/src/main/java/com/wix/reactnativeuilib/keyboardinput/utils/RuntimeUtils.java
++++ b/node_modules/react-native-ui-lib/lib/android/src/main/java/com/wix/reactnativeuilib/keyboardinput/utils/RuntimeUtils.java
+@@ -9,7 +9,9 @@ public class RuntimeUtils {
+     private static final Runnable sUIUpdateClosure = new Runnable() {
+         @Override
+         public void run() {
+-            ReactContextHolder.getContext().getNativeModule(UIManagerModule.class).onBatchComplete();
++           if(ReactContextHolder.getContext() != null && ReactContextHolder.getContext().getNativeModule(UIManagerModule.class) != null){
++               ReactContextHolder.getContext().getNativeModule(UIManagerModule.class).onBatchComplete();
++            }
+         }
+     };
+ 
+@@ -25,8 +27,16 @@ public class RuntimeUtils {
+             public void run() {
+                 userRunnable.run();
+                 if (ReactContextHolder.getContext() != null) {
+-                    ReactContextHolder.getContext().runOnNativeModulesQueueThread(sUIUpdateClosure);
++                    try { 
++                      android.utils.Log.e("RuntimeUtils". "dispatchUIUpdates: dispatchUIUpdates: running on native modules queue");
++                        ReactContextHolder.getContext().runOnNativeModulesQueueThread(sUIUpdateClosure);
++                    } catch (Exception e) {
++                        android.utils.Log.e("RuntimeUtils". "dispatchUIUpdates: runOnNativeModulesQueueThread: exception");
++                    }
+                 }
++                else {
++                        android.utils.Log.e("RuntimeUtils". "dispatchUIUpdates: context is empty");
++                 }
+             }
+         });
+     }

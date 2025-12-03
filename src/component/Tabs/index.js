@@ -23,7 +23,6 @@ function BottomTabNavigator() {
   const {languageString} = useSelector(state => state.user);
   const toast = useToast();
   useEffect(() => {
-    //
     messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', remoteMessage);
       showStatus(toast, remoteMessage.notification.body, 'custom_error_toast');
@@ -31,16 +30,11 @@ function BottomTabNavigator() {
   }, []);
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      // initialRouteName="Home"
       // screenOptions={{headerShown: false}}
 
-      tabBarOptions={{
-        showLabel: false,
-        showIcon: true,
-        tintColor: '#333',
-        activeTintColor: '#aaa',
-      }}
       screenOptions={({route, navigation}) => ({
+        tabBarShowLabel: false,
         headerShown: false,
         tabBarStyle: {
           height: Platform.OS === 'ios' ? 75 : 65,

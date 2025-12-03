@@ -5,12 +5,13 @@ import {Header} from '../comman/CommanHeader';
 import {CustomText} from '../comman/customText';
 import {styles} from '../helper/styles';
 import Down from '../../assets/images/Icons/Vector.svg';
-import {Colors, Picker} from 'react-native-ui-lib';
 import {showStatus} from '../utils/showToast';
 import {useToast} from 'react-native-toast-notifications';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {createTicket} from '../api/createTicket';
 import {useSelector} from 'react-redux';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Fonts } from '../helper/theme';
 const CreateTicket = ({navigation}) => {
   const toast = useToast();
   const [ticketType, setTicketType] = useState([]);
@@ -111,7 +112,37 @@ const CreateTicket = ({navigation}) => {
                 {languageString.type}
               </CustomText>
               <View style={{width: '100%'}}>
-                <Picker
+                <Dropdown
+                  style={[styles.inputBox]}
+                  placeholderStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  selectedTextStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  activeColor={'#F0F0F0'}
+                  iconStyle={{color: '#5F6368'}}
+                  search={0}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  data={ticketType.map(item => {
+                    return {
+                      value: item.value,
+                      label: item.label,
+                    };
+                  })}
+                  // enableSearch
+                  value={selectedType}
+                  onChange={item => setSelectedType(item)}
+                  underlineColor={'transparent'}
+                />
+                {/* <Picker
                   placeholder={languageString.selectType}
                   floatingPlaceholder={false}
                   containerStyle={{height: 50}}
@@ -121,28 +152,15 @@ const CreateTicket = ({navigation}) => {
                   onChange={item => setSelectedType(item)}
                   topBarProps={{title: ''}}
                   style={[styles.inputBox, {fontSize: 14}]}
-                  // showSearch
-                  // searchPlaceholder={'Search a Type of Design'}
                   searchStyle={{
                     color: Colors.blue30,
                     placeholderTextColor: Colors.grey50,
                   }}
-                  // onSearchChange={value => console.warn('value', value)}
                 >
                   {ticketType.map(option => (
                     <Picker.Item key={option.value} value={option} />
                   ))}
-                </Picker>
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    top: 30,
-                    position: 'absolute',
-                    right: 10,
-                  }}>
-                  <Down />
-                </View>
+                </Picker> */}
               </View>
             </View>
             <View style={{width: '100%', marginTop: 20}}>
@@ -150,7 +168,32 @@ const CreateTicket = ({navigation}) => {
                 {languageString.priority}
               </CustomText>
               <View style={{width: '100%'}}>
-                <Picker
+                <Dropdown
+                  style={[styles.inputBox]}
+                  placeholderStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  selectedTextStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  activeColor={'#F0F0F0'}
+                  iconStyle={{color: '#5F6368'}}
+                  search={0}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  data={priority}
+                  // enableSearch
+                  value={selectedPriority}
+                  onChange={item => setSelectedPriority(item)}
+                  underlineColor={'transparent'}
+                />
+                {/* <Picker
                   placeholder={languageString.selectPriority}
                   floatingPlaceholder={false}
                   containerStyle={{height: 50}}
@@ -160,28 +203,15 @@ const CreateTicket = ({navigation}) => {
                   onChange={item => setSelectedPriority(item)}
                   topBarProps={{title: ''}}
                   style={[styles.inputBox, {fontSize: 14}]}
-                  // showSearch
-                  // searchPlaceholder={'Search a Type of Design'}
                   searchStyle={{
                     color: Colors.blue30,
                     placeholderTextColor: Colors.grey50,
                   }}
-                  // onSearchChange={value => console.warn('value', value)}
                 >
                   {priority.map(option => (
                     <Picker.Item key={option.value} value={option} />
                   ))}
-                </Picker>
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    top: 30,
-                    position: 'absolute',
-                    right: 10,
-                  }}>
-                  <Down />
-                </View>
+                </Picker> */}
               </View>
             </View>
             <View style={{width: '100%', marginTop: 10}}>

@@ -5,13 +5,6 @@ import {Header} from '../../../comman/CommanHeader';
 import {CustomText} from '../../../comman/customText';
 import {styles} from '../../../helper/styles';
 import {Fonts} from '../../../helper/theme';
-import {Switch} from 'react-native-ui-lib';
-import {
-  Colors,
-  KeyboardAwareScrollView,
-  Picker,
-  DateTimePicker,
-} from 'react-native-ui-lib';
 import Down from '../../../../assets/images/Icons/Vector.svg';
 import {getCapedDataById} from '../../../api/getCapDatabyId';
 import {useSelector} from 'react-redux';
@@ -20,6 +13,8 @@ import {showStatus} from '../../../utils/showToast';
 import {useToast} from 'react-native-toast-notifications';
 import {updateTopUpPlan} from '../../../api/updateTopUp';
 import {ActivityIndicator} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Dropdown } from 'react-native-element-dropdown';
 const Topup = ({navigation}) => {
   const {currentService, AllCapedData, balance, languageString, user} =
     useSelector(state => state.user);
@@ -47,12 +42,20 @@ const Topup = ({navigation}) => {
   useEffect(() => {
     gteCapedData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentService]);
 
   const gteCapedData = async () => {
+    setLoading(true);
     const response = await getCapedDataById(currentService.tariff_id);
-    console.log(response);
+    console.log(response, currentService);
     if (response.remote === 'success') {
+      if (response.data.length === 1) {
+        setSelectedPlan({
+          label: `${response.data[0].title}, LYD${response.data[0].price}`,
+          value: response.data[0].id,
+          data: response.data[0],
+        });
+      }
       const caped = response.data.map(item => {
         if (item.id === currentService.top_up_tariff_id) {
           setSelectedPlan({
@@ -69,20 +72,23 @@ const Topup = ({navigation}) => {
       });
       setTopUpPlans(caped);
     }
+    setLoading(false);
   };
 
   const applyTopUp = async () => {
     if (selectedPlan) {
-      console.log(selectedPlan);
+      console.log(
+        parseFloat(balance.replace(',', '')),
+        parseFloat(selectedPlan.data.price),
+      );
       if (
-        parseFloat(balance.replace(',', '')) >
+        parseFloat(balance.replace(',', '')) >=
         parseFloat(selectedPlan.data.price)
       ) {
         setLoading(true);
         const data = {
           service_id: currentService.id,
           quantity: selectedPlan.data.amount * 10000000,
-          quantity_remind: selectedPlan.data.amount * 10000000,
           tariff_id: selectedPlan.data.id,
           valid_till: moment(date)
             .add(parseInt(selectedPlan.data.validity), 'month')
@@ -161,105 +167,35 @@ const Topup = ({navigation}) => {
                 {languageString.topUpPlan}
               </CustomText>
               <View style={{width: '100%'}}>
-                <Picker
-                  placeholder={languageString.selectPlan}
-                  floatingPlaceholder={false}
-                  containerStyle={{height: 50}}
-                  hideUnderline
-                  value={selectedPlan}
-                  enableModalBlur={false}
-                  onChange={item => setSelectedPlan(item)}
-                  topBarProps={{title: ''}}
-                  style={styles.inputBox}
-                  // showSearch
-                  // searchPlaceholder={'Search a Type of Design'}
-                  searchStyle={{
-                    color: Colors.blue30,
-                    placeholderTextColor: Colors.grey50,
+                <Dropdown
+                  style={[styles.inputBox]}
+                  placeholderStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
                   }}
-                  // onSearchChange={value => console.warn('value', value)}
-                >
-                  {topUpPlans.map(option => (
-                    <Picker.Item key={option.value} value={option} />
-                  ))}
-                </Picker>
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    top: 30,
-                    position: 'absolute',
-                    right: 10,
-                  }}>
-                  <Down />
-                </View>
+                  selectedTextStyle={{
+                    color: '#5F6368',
+                    fontSize: 14,
+                    fontFamily: Fonts.regular1,
+                  }}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  activeColor={'#F0F0F0'}
+                  iconStyle={{color: '#5F6368'}}
+                  search={0}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  data={topUpPlans}
+                  // enableSearch
+                  value={selectedPlan}
+                  onChange={item => {
+                    setSelectedPlan(item);
+                  }}
+                  underlineColor={'transparent'}
+                />
               </View>
             </View>
-            {/* <View style={{width: '100%', marginTop: 20}}>
-              <CustomText style={styles.label}>Quantity</CustomText>
-              <View
-                style={[
-                  styles.inputBox,
-                  {
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: 0,
-                  },
-                ]}>
-                <TextInput
-                  placeholder="20"
-                  style={{flex: 1, paddingHorizontal: 20, color: '#0E1618'}}
-                  editable={false}
-                  value={selectedPlan?.data?.amount}
-                />
-                <View style={{width: '40%'}}>
-                  <Picker
-                    placeholder="GB"
-                    floatingPlaceholder={false}
-                    editable={false}
-                    containerStyle={[
-                      styles.inputBox,
-                      {
-                        marginTop: 0,
-                        height: 50,
-                        backgroundColor: '#ddd',
-                      },
-                    ]}
-                    hideUnderline
-                    enableModalBlur={false}
-                    onChange={item => setSelectedPlan(item)}
-                    topBarProps={{title: 'Search plan'}}
-                    style={{
-                      width: '100%',
-                      alignItems: 'center',
-                      height: 50,
-                      marginTop: 25,
-                    }}
-                    // showSearch
-                    // searchPlaceholder={'Search a Type of Design'}
-                    searchStyle={{
-                      color: Colors.blue30,
-                      placeholderTextColor: Colors.grey50,
-                    }}
-                    // onSearchChange={value => console.warn('value', value)}
-                  >
-                    {options2.map(option => (
-                      <Picker.Item key={option.value} value={option} />
-                    ))}
-                  </Picker>
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      top: 22,
-                      position: 'absolute',
-                      right: 10,
-                    }}>
-                    <Down />
-                  </View>
-                </View>
-              </View>
-            </View> */}
             <View style={{width: '100%', marginTop: 20}}>
               <CustomText style={styles.label}>
                 {languageString.price}

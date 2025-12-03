@@ -123,10 +123,7 @@ const MainScreen = ({navigation}) => {
       customer_id: user.id,
       customer_name: user.name,
     };
-    const response = await postApisWithoutToken(
-      '/device-token?version=1',
-      data,
-    );
+    const response = await postApisWithoutToken('/device-token', data);
   };
 
   const getDashboardData = async () => {
@@ -242,6 +239,7 @@ const MainScreen = ({navigation}) => {
   const getLimitedPlanDetail = async () => {
     const response = await getCapedData();
     if (response.remote === 'success') {
+      console.log('response6565', response.data);
       dispatch(getAllCapedData(response.data));
     }
   };
@@ -252,8 +250,9 @@ const MainScreen = ({navigation}) => {
 
   const SetLanguage = async () => {
     const lang = await AsyncStorage.getItem('language');
+    const appVersion = await AsyncStorage.getItem('appVersion');
     const response = await getApiWithouttoken(
-      `/get-language?language=${lang || 'ar'}`,
+      `/get-language?language=${lang || 'ar'}&version=${appVersion}`,
     );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
@@ -264,8 +263,9 @@ const MainScreen = ({navigation}) => {
   const updateIndex = async selectedIndex => {
     var lang = selectedIndex == 0 ? 'en' : 'ar';
     AsyncStorage.setItem('language', lang);
+    const appVersion = await AsyncStorage.getItem('appVersion');
     const response = await getApiWithouttoken(
-      `/get-language?language=${lang}&version=1`,
+      `/get-language?language=${lang}&version=${appVersion}`,
     );
     if (response.success) {
       dispatch(setLanguageString(response.data.data.values));
@@ -305,19 +305,19 @@ const MainScreen = ({navigation}) => {
     getGiftCard();
   };
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, []);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, []);
 
-  const backAction = () => {
-    if (navigation.isFocused()) {
-      BackHandler.exitApp();
-      return true;
-    }
-  };
+  // const backAction = () => {
+  //   if (navigation.isFocused()) {
+  //     BackHandler.exitApp();
+  //     return true;
+  //   }
+  // };
 
   const sendResponseOfLoginGiftCard = async () => {
     setGiftModal(false);

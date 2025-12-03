@@ -42,8 +42,15 @@ const Support = ({navigation}) => {
     const response = await getAllTickets();
     console.log(response);
     if (response.remote === 'success') {
-      setTickets(response.data);
+      setTickets(sortData(response.data));
     }
+  };
+
+  const sortData = data => {
+    const sort = data.sort((a, b) => {
+      return b.id - a.id;
+    });
+    return sort;
   };
 
   const ticketDetail = async ticket => {

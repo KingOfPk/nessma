@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>739678330623-r6uvstl448uad8uh6gt3m9jfgtous3mu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.739678330623-r6uvstl448uad8uh6gt3m9jfgtous3mu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAomBP3-9tk5EYMtrQZWLW0J230HggrVyk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>739678330623</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.nessmanet.app.nessmanet</string>
+	<key>PROJECT_ID</key>
+	<string>nessmanet-3fdbc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nessmanet-3fdbc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:739678330623:ios:e7c58408a5b54de62176ca</string>
+</dict>
+</plist>
